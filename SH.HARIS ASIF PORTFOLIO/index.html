@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600&family=Syne:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="templatemo-nexaverse.css">
+<script>
+try { if (localStorage.getItem('theme') === 'light') document.documentElement.setAttribute('data-theme', 'light'); } catch (e) {}
+</script>
 
 </head>
 <body>
@@ -16,6 +19,7 @@
   <span></span>
   <span></span>
   <span></span>
+  <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>      
 </div>
 
 <div class="nav-menu" id="navMenu">
@@ -514,6 +518,9 @@ Web Developer & AI Specialist</h3>
 </style>
 
 <script>
+  function particleRGB() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? '10, 126, 164' : '0, 217, 255';
+  }  
   const canvas = document.getElementById('particle-canvas');
   const ctx = canvas.getContext('2d');
 
@@ -546,7 +553,7 @@ Web Developer & AI Specialist</h3>
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-      ctx.fillStyle = '#00d9ff'; // particle color, apni pasand se badlo
+      ctx.fillStyle = `rgb(${particleRGB()})`;
       ctx.fill();
     }
   }
@@ -568,7 +575,7 @@ Web Developer & AI Specialist</h3>
 
         if (distance < maxDistance) {
           ctx.beginPath();
-          ctx.strokeStyle = `rgba(0, 217, 255, ${1 - distance / maxDistance})`;
+          ctx.strokeStyle = `rgba(${particleRGB()}, ${1 - distance / maxDistance})`;
           ctx.lineWidth = 1;
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -611,6 +618,20 @@ function goToSection(sectionId) {
   document.getElementById('navToggle').classList.remove('active');
   document.getElementById('navMenu').classList.remove('active');
 }
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeToggle').textContent = theme === 'light' ? '☀️' : '🌙';
+  try { localStorage.setItem('theme', theme); } catch (e) {}
+}
+
+function toggleTheme() {
+  var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  applyTheme(isLight ? 'dark' : 'light');
+}
+
+var savedTheme = 'dark';
+try { savedTheme = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+applyTheme(savedTheme);    
 </script>
 
 
