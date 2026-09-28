@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FACTORY ERP system</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0a0a0a;
+      color: #f1f1f1;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      line-height: 1.7;
+    }
+
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .article-container {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .image-wrapper {
+      position: relative;
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .image-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+    .image-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+    .article-content h1 {
+      font-size: 32px;
+      margin-bottom: 15px;
+    }
+
+    .article-content p {
+      font-size: 17px;
+      color: #dcdcdc;
+      margin-bottom: 18px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 30px;
+      color: #00d9ff;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Particle Network Background -->
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="article-container">
+    <a href="index.html" class="back-link">&larr; Back to HOME</a>
+
+    <div class="image-wrapper">
+      <img src="IMAGES 2.0/newfactory.png" alt="FACTORY ERP SYSTEM">
+    </div>
+
+    <div class="article-content">
+      <h1>FACTORY ERP SYSTEM</h1>
+      <p>
+        The Factory ERP System is a centralized business management solution designed to simplify and organize factory operations. It brings essential processes such as production, inventory, sales, purchasing, employee management, and reporting into one unified platform.
+      </p>
+      <p>
+        The system provides a clean and intuitive dashboard where users can monitor important business activities, track inventory, manage production, and access real-time operational information. This reduces dependency on scattered records and makes day-to-day management more structured and efficient.
+      </p>
+      <p>
+        This project demonstrates how modern software can transform traditional factory workflows into a connected digital system. The focus was on creating a professional, scalable, and user-friendly ERP experience that helps businesses manage their operations with greater clarity and control.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particleCount = 90;
+    const maxDistance = 130;
+    let particles = [];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+        this.radius = 2;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#00d9ff';
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+    }
+    initParticles();
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < maxDistance) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 217, 255, ${1 - distance / maxDistance})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      connectParticles();
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+
+</body>
+</html>
