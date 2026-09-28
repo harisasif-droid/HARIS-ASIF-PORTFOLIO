@@ -6,12 +6,7 @@ https://templatemo.com/tm-603-nexaverse
 
 */
 
-// Loading Screen
-window.addEventListener('load', () => {
-   setTimeout(() => {
-      document.getElementById('loadingScreen').classList.add('hidden');
-   }, 1000);
-});
+
 
 // Menu Item Click Handler
 const menuItems = document.querySelectorAll('.menu-item');
